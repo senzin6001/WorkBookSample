@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head>
+		<meta charset="UTF-8">
+
+	</head>
+	<body>
+		<!-- ポイント：th:fragment -->
+		<div th:fragment="home_contents">
+			<div class="page-header">
+				<h1>ホーム</h1>
+			</div>
+			<p>最大問題数：<span th:text="${questionAllCount}"></span></p>
+			<form method="get" action="/start">
+				<label>カテゴリを選択</label>
+            	<div th:each="category : ${categoryList}" class="list-group-category">
+					<input type="checkbox" th:id="${'category_' + category}" th:name="categories" th:value="${category}" />
+					<label th:for="${'category_' + category}" th:text="${category}"></label>
+					<br/>
+				</div>
+				<label>出題対象：</label>
+				<input type="radio" name="selection" value="all" checked/> すべて
+				<input type="radio" name="selection" value="incorrect"/> 不正解のみ
+				<br/>
+
+				<label>出題数を入力</label>
+		        <input type="number" min="1" th:value="${questionAllCount}" th:max="${questionAllCount}" name="questionCount">
+
+				<p th:if="${not #strings.isEmpty(message)}" th:text="${message}"></p>
+		        <button type="submit">出題開始</button>
+			</form>
+
+		</div>
+	</body>
+</html>
