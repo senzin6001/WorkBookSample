@@ -41,6 +41,7 @@ public class HomeController{
 	private Map<String,String> radioResult;
 	private Map<String,String> radioIncorrect;
 		
+	// コンストラクタ
     public HomeController(QuestionService questionService, UserService userService) {
     	  	
         this.questionService = questionService;
@@ -135,7 +136,7 @@ public class HomeController{
 	    
 	}
 	
-
+	// ホーム画面の表示
 	@GetMapping("/home")
 	public String getHome(Model model ) {		
 		initializeIncorrectRadioMaps(model);
@@ -151,7 +152,7 @@ public class HomeController{
 		return "login/homeLayout";
 		
 	}
-	
+	// 出題設定の初期化
 	@GetMapping("/start")
 	public String initQuestion(
 	        @RequestParam(name = "categories", required = false) List<String> selectedCategories,
@@ -169,7 +170,6 @@ public class HomeController{
 	    
 		System.out.println("selection"+selection);
 	    if("incorrect".equals(selection)) {
-			System.out.println("通った");
 	    	questionList = questionService.filterIncorrectQuestions(questionList);
 	    }
 	    questionList = questionService.getRandomQuestions(questionList);   
@@ -188,6 +188,7 @@ public class HomeController{
 	    
 	    return getQuestion(model);
 	}
+	// 出題画面の表示
 	@GetMapping("/login/question")
 	public String getQuestion(Model model) {
 		//出題テーブルから解答済以外のidを取得
@@ -210,7 +211,7 @@ public class HomeController{
 		return "login/homeLayout";
 		
 	}
-	
+	// 結果画面の表示
 	@GetMapping("/login/result")
 	public String getResult(Model model) {
 		
@@ -225,7 +226,7 @@ public class HomeController{
 		return "login/homeLayout";
 		
 	}
-	
+	// 解答処理
 	@PostMapping("/login/answer")
 	public String answer(@RequestParam(name = "id", required = false) Integer id,
 			@RequestParam(name = "answer", required = false) int answer,
@@ -241,7 +242,7 @@ public class HomeController{
 		return getQuestion(model);
 		
 	}
-
+	// ユーザーリスト画面の表示
 	@GetMapping("/userList")
 	public String getUserList(Model model) {
 		model.addAttribute("contents","login/userList :: userList_contents");
@@ -255,7 +256,7 @@ public class HomeController{
 		return "login/homeLayout";
 	}
 	
-	
+	// ユーザー詳細画面の表示
 	@GetMapping("/userDetail/{id:.+}")
 	public String getUserDetail(@ModelAttribute SignupForm form, Model model,
 			@PathVariable("id") Integer userId) {
@@ -275,7 +276,7 @@ public class HomeController{
 		}
 		return "login/homeLayout";
 	}
-	
+	// ユーザー詳細の更新処理
 	@PostMapping(value ="/userDetail",params="update")
 	public String postUserDetailUpdate(@ModelAttribute @Validated(GroupOrder.class) SignupForm form,
 			BindingResult bindingResult,
@@ -301,7 +302,7 @@ public class HomeController{
 		}
 		return getUserList(model);
 	}
-	
+	// ユーザー詳細の削除処理
 	@PostMapping(value="/userDetail",params="delete")
 	public String postUserDetailDelete(@ModelAttribute SignupForm form,Model model) {
 		System.out.println("削除ボタンの処理");
@@ -313,7 +314,7 @@ public class HomeController{
 		}
 		return getUserList(model);
 	}
-		
+	// 問題作成画面の表示
 	@GetMapping("/questionCreation")
 	public String getQuestionCreationForm(@ModelAttribute QuestionCreationForm form,Model model) {
 		
@@ -329,7 +330,7 @@ public class HomeController{
 		
 	}
 	
-	
+	// 問題作成処理
 	@PostMapping(value="/questionCreation",params="creation")
 	public String postQuestionCreation(@ModelAttribute @Validated(GroupOrder.class) QuestionCreationForm form,
 			BindingResult bindingResult,
@@ -354,7 +355,7 @@ public class HomeController{
 			
 			return "redirect:/questionCreation";
 	}
-
+	// 問題リストの表示
 	@GetMapping("/questionList")
 	public String getQuestionList(Model model) {
 		model.addAttribute("contents","login/questionList :: questionList_contents");
@@ -367,6 +368,7 @@ public class HomeController{
 		model.addAttribute("questionListCount",count);
 		return "login/homeLayout";
 	}
+	
 	@GetMapping("/questionManagement")	
 	public String getQuestionManagement(Model model) {
 		model.addAttribute("contents","login/questionManagement :: questionManagement_contents");
